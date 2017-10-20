@@ -1,18 +1,17 @@
-#!/usr/bin/env python3
-
 import datetime
 import pytz
 import execjs
 
 class DateJS():
-    def __init__(self, JS_STRING):
-        self.YEAR = 0
-        self.MONTH = 0
-        self.DATE = 0
-        self.HOUR = 0
-        self.MINUTE = 0
-        self.SECOND = 0
-        self.MILLISECONDS = 0
+    def __init__(self, JS_STRING, y=0, m=0, d=0, h=0, minute=0, s=0, ms=0, tzo=0):
+        self.YEAR = y
+        self.MONTH = m
+        self.DATE = d
+        self.HOUR = h
+        self.MINUTE = minute
+        self.SECOND = s
+        self.MILLISECONDS = ms
+        self.OFFSET = tzo
         self.TZ = None
         self.TZ_SIMPLE = None
         self.TZ_CUSTOM = None
@@ -22,7 +21,8 @@ class DateJS():
         self.PYTIME_CUSTOM = datetime.datetime.now()
         self.CUSTOM_TIMEZONES = []
         self.ctx = None
-        self.setCTX()
+        if self.YEAR == 0:
+            self.setCTX()
         self.setAllValues()
 
     def setCTX(self):
@@ -54,13 +54,14 @@ class DateJS():
             """)
 
     def setAllValues(self):
-        self.setYear()
-        self.setMonth()
-        self.setDate()
-        self.setHour()
-        self.setMinute()
-        self.setSecond()
-        self.setMillisecond()
+        if not self.ctx == None:
+            self.setYear()
+            self.setMonth()
+            self.setDate()
+            self.setHour()
+            self.setMinute()
+            self.setSecond()
+            self.setMillisecond()
         self.setTZ()
 
     def getTime(self):
@@ -134,35 +135,36 @@ class DateJS():
         return self.TZ_CUSTOM
 
     def setTZ(self):
-        offset = self.ctx.call("t", self.JS_TIME)
-        offset = self.offsetFormat(offset)
+        if not self.ctx == None:
+            self.offset = self.ctx.call("t", self.JS_TIME)
+        self.offset = self.offsetFormat()
         sorted_tzs = self.allTimezones()
         for zone in sorted_tzs:
-            if offset in zone[1]:
+            if self.offset in zone[1]:
                 self.TZ = pytz.timezone(zone[0])
                 break
         simple_tzs = self.basicTimezones()
         for z in simple_tzs:
-            if offset in z[1]:
+            if self.offset in z[1]:
                 self.TZ_SIMPLE = pytz.timezone(z[0])
                 break
         custom_tzs = self.CUSTOM_TIMEZONES
         if custom_tzs == []:
             return
         for w in custom_tzs:
-            if offset in w[1]:
+            if self.offset in w[1]:
                 self.TZ_CUSTOM = pytz.timezone(w[0])
                 return
         raise Exception("No Timezone Found!")
 
     def offsetFormat(self, offset):
         west = True
-        if offset == "-":
+        if "-" in self.offset:
             west = False
-        hours_offset = int(offset/60)
+        hours_offset = int(self.offset/60)
         if abs(hours_offset) < 10:
             hours_offset = "0" + str(hours_offset)
-        minutes_offset = int(offset%60)
+        minutes_offset = int(self.offset%60)
         if minutes_offset < 10:
             minutes_offset = "0" + str(minutes_offset)
         if west:
