@@ -27,3 +27,22 @@ You can access a wide array of values by calling one of the following methods:
 ## Common Errors
 
 If you get a JavaScript Runtime Error, you can fix this by running `sudo apt-get install nodejs`. This will configure the JavaScript Runtime Environment.
+
+## Examples
+
+```python
+from DateJS import DateJS
+
+dJS = DateJS.DateJS("Thu Oct 19 2017 21:50:06 GMT-0400 (Eastern Daylight Time)")
+
+dJS.getTime() # Get datetime object of time with timezone data
+
+dJS.getTimezone() # Returns a timezone object from pytz
+
+dJS.getSimpleTime() # Returns most common timezone object from pytz
+
+```
+
+## Unnoticed Errors
+
+If you would like to report any errors, please open an issue. If you know how to fix the issue, please submit appropiate changes.
