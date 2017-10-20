@@ -1,7 +1,7 @@
 README.md
 setup.cfg
 setup.py
-DateJS/DateJS.py
+DateJS/sample.py
 DateJS.egg-info/PKG-INFO
 DateJS.egg-info/SOURCES.txt
 DateJS.egg-info/dependency_links.txt
