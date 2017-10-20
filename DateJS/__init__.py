@@ -5,13 +5,13 @@ import execjs
 class DateJS():
     def __init__(self, JS_STRING, y=0, m=0, d=0, h=0, minute=0, s=0, ms=0, tzo=0):
         self.YEAR = y
-        self.MONTH = m
+        self.MONTH = m + 1
         self.DATE = d
         self.HOUR = h
         self.MINUTE = minute
         self.SECOND = s
         self.MILLISECONDS = ms
-        self.OFFSET = tzo
+        self.OFFSET = int(tzo)
         self.TZ = None
         self.TZ_SIMPLE = None
         self.TZ_CUSTOM = None
@@ -65,15 +65,15 @@ class DateJS():
         self.setTZ()
 
     def getTime(self):
-        self.PYTIME = self.PYTIME.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=self.TZ)
+        self.PYTIME = self.PYTIME.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=pytz.timezone(self.TZ))
         return self.PYTIME
 
     def getSimpleTime(self):
-        self.PYTIME_SIMPLE = self.PYTIME_SIMPLE.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=self.TZ_SIMPLE)
+        self.PYTIME_SIMPLE = self.PYTIME_SIMPLE.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=pytz.timezone(self.TZ_SIMPLE))
         return self.PYTIME_SIMPLE
 
     def getCustomTime(self):
-        self.PYTIME_CUSTOM = self.PYTIME_CUSTOM.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=self.TZ_CUSTOM)
+        self.PYTIME_CUSTOM = self.PYTIME_CUSTOM.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=pytz.timezone(self.TZ_CUSTOM))
         return self.PYTIME_CUSTOM
 
     def getYear(self):
@@ -136,35 +136,35 @@ class DateJS():
 
     def setTZ(self):
         if not self.ctx == None:
-            self.offset = self.ctx.call("t", self.JS_TIME)
-        self.offset = self.offsetFormat()
+            self.OFFSET = self.ctx.call("t", self.JS_TIME)
+        self.OFFSET = self.offsetFormat()
         sorted_tzs = self.allTimezones()
         for zone in sorted_tzs:
-            if self.offset in zone[1]:
-                self.TZ = pytz.timezone(zone[0])
+            if self.OFFSET in zone[1]:
+                self.TZ = zone[0]
                 break
         simple_tzs = self.basicTimezones()
         for z in simple_tzs:
-            if self.offset in z[1]:
-                self.TZ_SIMPLE = pytz.timezone(z[0])
+            if self.OFFSET in z[1]:
+                self.TZ_SIMPLE = z[0]
                 break
         custom_tzs = self.CUSTOM_TIMEZONES
         if custom_tzs == []:
             return
         for w in custom_tzs:
-            if self.offset in w[1]:
-                self.TZ_CUSTOM = pytz.timezone(w[0])
+            if self.OFFSET in w[1]:
+                self.TZ_CUSTOM = w[0]
                 return
         raise Exception("No Timezone Found!")
 
-    def offsetFormat(self, offset):
+    def offsetFormat(self):
         west = True
-        if "-" in self.offset:
+        if int(self.OFFSET) < 0:
             west = False
-        hours_offset = int(self.offset/60)
+        hours_offset = int(self.OFFSET/60)
         if abs(hours_offset) < 10:
             hours_offset = "0" + str(hours_offset)
-        minutes_offset = int(self.offset%60)
+        minutes_offset = int(self.OFFSET%60)
         if minutes_offset < 10:
             minutes_offset = "0" + str(minutes_offset)
         if west:

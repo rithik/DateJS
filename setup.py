@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(name='DateJS',
       description='Python Library that converts Javascript Date objects to Python Datetime objects',
-      version='0.1.9',
+      version='0.1.10',
       url='https://github.com/rithik/DateJS',
       author='Rithik Yelisetty',
       author_email='rithik@gmail.com',
