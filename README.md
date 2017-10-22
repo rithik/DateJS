@@ -33,7 +33,27 @@ If you get a JavaScript Runtime Error, you can fix this by running `sudo apt-get
 ```python
 from DateJS import DateJS
 
-dJS = DateJS.DateJS("Thu Oct 19 2017 21:50:06 GMT-0400 (Eastern Daylight Time)")
+dJS = DateJS("Thu Oct 19 2017 21:50:06 GMT-0400 (Eastern Daylight Time)")
+
+dJS.getTime() # Get datetime object of time with timezone data
+
+dJS.getTimezone() # Returns a timezone object from pytz
+
+dJS.getSimpleTime() # Returns most common timezone object from pytz
+
+```
+
+If you use the example above, JavaScript will automatically convert the Date into the timezone of the python server. In order to maintain the existing timezone, you can pass in each argument separately.
+
+Format: `DateJS(JAVASCRIPT_STRING, YEAR, MONTH, DATE, HOUR, MINUTE, SECOND, MILLISECOND, OFFSET)`.
+
+The month should be in the range 0-11 (so October would correspond with 9).
+
+The last argument is the timezone offset. This can be determined by doing `new Date().getTimezoneOffset()`.
+
+```python
+
+dJS = DateJS("Thu Oct 19 2017 21:50:06 GMT-0400 (Eastern Daylight Time)", 2017, 9, 19, 21, 50, 6, 0, 240)
 
 dJS.getTime() # Get datetime object of time with timezone data
 
