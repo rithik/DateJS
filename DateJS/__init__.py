@@ -142,7 +142,6 @@ class DateJS():
         for zone in sorted_tzs:
             if self.OFFSET in zone[1]:
                 self.TZ = zone[0]
-                break
         simple_tzs = self.basicTimezones()
         for z in simple_tzs:
             if self.OFFSET in z[1]:
@@ -176,7 +175,7 @@ class DateJS():
         sorted_tzs = sorted(tz, key=lambda x: int(x[1].split()[0]))
         return sorted_tzs
 
-    def basicTimezones(self):
+    def basicTimezones(self): # This method is not compatible with standard time.
         SHORT_LIST_TIMEZONES = [('Pacific/Midway', '-1100 Pacific/Midway'), ('US/Hawaii', '-1000 US/Hawaii'), ('Pacific/Marquesas', '-0930 Pacific/Marquesas'), ('Pacific/Gambier', '-0900 Pacific/Gambier'), ('US/Alaska', '-0800 US/Alaska'), ('US/Pacific', '-0700 US/Pacific'), ('US/Mountain', '-0600 US/Mountain'), ('US/Central', '-0500 US/Central'), ('US/Eastern', '-0400 US/Eastern'), ('America/Argentina/Buenos_Aires', '-0300 America/Argentina/Buenos_Aires'),   ('Canada/Newfoundland', '-0230 Canada/Newfoundland'), ('America/Sao_Paulo', '-0200 America/Sao_Paulo'), ('Atlantic/Cape_Verde', '-0100 Atlantic/Cape_Verde'), ('UTC', '+0000 UTC'), ('Europe/London', '+0100 Europe/London'),  ('Europe/Paris', '+0200 Europe/Paris'), ('Europe/Moscow', '+0300 Europe/Moscow'), ('Asia/Tehran', '+0330 Asia/Tehran'), ('Asia/Dubai', '+0400 Asia/Dubai'), ('Asia/Kabul', '+0430 Asia/Kabul'), ('Asia/Karachi', '+0500 Asia/Karachi'), ('Asia/Kolkata', '+0530 Asia/Kolkata'), ('Asia/Kathmandu', '+0545 Asia/Kathmandu'), ('Asia/Dhaka', '+0600 Asia/Dhaka'), ('Indian/Cocos', '+0630 Indian/Cocos'), ('Asia/Bangkok', '+0700 Asia/Bangkok'), ('Asia/Hong_Kong', '+0800 Asia/Hong_Kong'), ('Asia/Pyongyang', '+0830 Asia/Pyongyang'), ('Australia/Eucla', '+0845 Australia/Eucla'), ('Asia/Tokyo', '+0900 Asia/Tokyo'),  ('Australia/Darwin', '+0930 Australia/Darwin'), ('Australia/Brisbane', '+1000 Australia/Brisbane'),  ('Australia/Adelaide', '+1030 Australia/Adelaide'), ('Australia/Sydney', '+1100 Australia/Sydney'), ('Pacific/Fiji', '+1200 Pacific/Fiji'), ('Pacific/Auckland', '+1300 Pacific/Auckland'), ('Pacific/Chatham', '+1345 Pacific/Chatham'), ('Pacific/Kiritimati', '+1400 Pacific/Kiritimati')]
         return SHORT_LIST_TIMEZONES
 
