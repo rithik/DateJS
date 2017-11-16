@@ -8,7 +8,7 @@ To use this library, you must first install the library (pip install DateJS)
 
 In your code, you must import DateJS package by including `from DateJS import DateJS`.
 
-To convert JavaScript Date, initialize a DateJS object by doing `DateJS.DateJS(JAVASCRIPT_DATE_STRING)`, where the `JAVASCRIPT_DATE_STRING` can be determined by running `new Date().toString()` in JavaScript.
+To convert JavaScript Date, initialize a DateJS object by doing `DateJS(JAVASCRIPT_DATE_STRING)`, where the `JAVASCRIPT_DATE_STRING` can be determined by running `new Date().toString()` in JavaScript.
 
 ## Get Values
 
