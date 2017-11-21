@@ -177,7 +177,7 @@ class DateJS():
         return sorted_tzs
 
     def basicTimezones(self):
-        SHORT_LIST_TIMEZONES = ['Pacific/Midway', 'US/Hawaii', 'Pacific/Marquesas', 'Pacific/Gambier', 'US/Alaska', 'US/Pacific', 'US/Mountain', 'US/Central', 'US/Eastern', 'America/Argentina/Buenos_Aires',  'Canada/Newfoundland', 'America/Sao_Paulo', 'Atlantic/Cape_Verde', 'UTC', 'Europe/London', 'Europe/Paris', 'Europe/Moscow', 'Asia/Tehran', 'Asia/Dubai', 'Asia/Kabul', 'Asia/Karachi', 'Asia/Kolkata', 'Asia/Kathmandu', 'Asia/Dhaka', 'Indian/Cocos', '+0630 Indian/Cocos', 'Asia/Bangkok', 'Asia/Hong_Kong', 'Asia/Pyongyang', 'Australia/Eucla', 'Asia/Tokyo', 'Australia/Darwin', 'Australia/Brisbane', 'Australia/Adelaide', 'Australia/Sydney', 'Pacific/Fiji', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Kiritimati']
+        SHORT_LIST_TIMEZONES = ['Pacific/Midway', 'US/Hawaii', 'Pacific/Marquesas', 'Pacific/Gambier', 'US/Alaska', 'US/Pacific', 'US/Mountain', 'US/Central', 'US/Eastern', 'America/Argentina/Buenos_Aires',  'Canada/Newfoundland', 'America/Sao_Paulo', 'Atlantic/Cape_Verde', 'UTC', 'Europe/London', 'Europe/Paris', 'Europe/Moscow', 'Asia/Tehran', 'Asia/Dubai', 'Asia/Kabul', 'Asia/Karachi', 'Asia/Kolkata', 'Asia/Kathmandu', 'Asia/Dhaka', 'Indian/Cocos', 'Asia/Bangkok', 'Asia/Hong_Kong', 'Asia/Pyongyang', 'Australia/Eucla', 'Asia/Tokyo', 'Australia/Darwin', 'Australia/Brisbane', 'Australia/Adelaide', 'Australia/Sydney', 'Pacific/Fiji', 'Pacific/Auckland', 'Pacific/Chatham', 'Pacific/Kiritimati']
         tz = [(item, datetime.datetime.now(pytz.timezone(item)).strftime('%z') + " " + item) for item in pytz.common_timezones if item in SHORT_LIST_TIMEZONES]
         sorted_tzs = sorted(tz, key=lambda x: int(x[1].split()[0]))
         return sorted_tzs

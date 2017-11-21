@@ -66,3 +66,4 @@ dJS.getSimpleTime() # Returns most common timezone object from pytz
 ## Unnoticed Errors
 
 If you would like to report any errors, please open an issue. If you know how to fix the issue, please submit appropiate changes.
+
