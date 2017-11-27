@@ -1,4 +1,4 @@
-# DateJS
+# DateJS    ![Build Status](https://travis-ci.org/rithik/DateJS.svg?branch=master)
 
 ## Convert Date from a JavaScript Date object to a Python DateTime object
 
