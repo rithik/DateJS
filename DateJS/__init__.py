@@ -20,41 +20,33 @@ class DateJS():
         self.PYTIME_SIMPLE = datetime.datetime.now()
         self.PYTIME_CUSTOM = datetime.datetime.now()
         self.CUSTOM_TIMEZONES = []
-        self.functions = None
+        self.jsFunction = None
+        self.result = None
         if self.YEAR == 0:
-            self.setFunctions()
+            self.runJSFunction()
         self.setAllValues()
 
-    def setFunctions(self):
-        self.functions = """
-                function y(x){
-                    return new Date(x).getFullYear();
-                }
-                function m(x){
-                    return new Date(x).getMonth();
-                }
-                function d(x){
-                    return new Date(x).getDate();
-                }
-                function h(x){
-                    return new Date(x).getHours();
-                }
-                function i(x){
-                    return new Date(x).getMinutes();
-                }
-                function s(x){
-                    return new Date(x).getSeconds();
-                }
-                function l(x){
-                    return new Date(x).getMilliseconds();
-                }
-                function t(x){
-                    return new Date(x).getTimezoneOffset();
+    def runJSFunction(self):
+        self.jsFunction = """
+                function run(x){
+                    var date = new Date(x);
+                    console.log(date.getFullYear());
+                    console.log(date.getMonth());
+                    console.log(date.getDate());
+                    console.log(date.getHours());
+                    console.log(date.getMinutes());
+                    console.log(date.getSeconds());
+                    console.log(date.getMilliseconds());
+                    console.log(date.getTimezoneOffset());
                 }
             """
+        funcCall = "run('" + self.JS_TIME + "');"
+        self.result = js.exec(self.jsFunction + funcCall).splitlines()
+        self.result = [int(k) for k in self.result]
+        return
 
     def setAllValues(self):
-        if not self.functions == None:
+        if not self.result == None:
             self.setYear()
             self.setMonth()
             self.setDate()
@@ -80,56 +72,49 @@ class DateJS():
         return self.YEAR
 
     def setYear(self):
-        funcCall = "console.log(y('" + self.JS_TIME + "'));"
-        self.YEAR = int(js.exec(self.functions + funcCall))
+        self.YEAR = self.result[0]
         return
 
     def getMonth(self):
         return self.MONTH
 
     def setMonth(self):
-        funcCall = "console.log(m('" + self.JS_TIME + "'));"
-        self.MONTH = int(js.exec(self.functions + funcCall)) + 1 # This +1 moves month numbers from 0-11 to 1-12
+        self.MONTH = self.result[1] + 1 # This +1 moves month numbers from 0-11 to 1-12
         return
 
     def getDate(self):
         return self.DATE
 
     def setDate(self):
-        funcCall = "console.log(d('" + self.JS_TIME + "'));"
-        self.DATE = int(js.exec(self.functions + funcCall))
+        self.DATE = self.result[2]
         return
 
     def getHours(self):
         return self.HOUR
 
     def setHour(self):
-        funcCall = "console.log(h('" + self.JS_TIME + "'));"
-        self.HOUR = int(js.exec(self.functions + funcCall))
+        self.HOUR = self.result[3]
         return
 
     def getMinutes(self):
         return self.MINUTE
 
     def setMinute(self):
-        funcCall = "console.log(i('" + self.JS_TIME + "'));"
-        self.MINUTE = int(js.exec(self.functions + funcCall))
+        self.MINUTE = self.result[4]
         return
 
     def getSeconds(self):
         return self.SECOND
 
     def setSecond(self):
-        funcCall = "console.log(s('" + self.JS_TIME + "'));"
-        self.SECOND = int(js.exec(self.functions + funcCall))
+        self.SECOND = self.result[5]
         return
 
     def getMilliseconds(self):
         return self.MILLISECONDS
 
     def setMillisecond(self):
-        funcCall = "console.log(l('" + self.JS_TIME + "'));"
-        self.MILLISECONDS = int(js.exec(self.functions + funcCall))
+        self.MILLISECONDS = self.result[6]
         return
 
     def getTimezone(self):
@@ -142,9 +127,8 @@ class DateJS():
         return self.TZ_CUSTOM
 
     def setTZ(self):
-        if not self.functions == None:
-            funcCall = "console.log(t('" + self.JS_TIME + "'));"
-            self.OFFSET = int(js.exec(self.functions + funcCall))
+        if not self.result == None:
+            self.OFFSET = self.result[7]
         self.OFFSET = self.offsetFormat()
         sorted_tzs = self.allTimezones()
         for zone in sorted_tzs:
