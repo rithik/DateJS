@@ -1,8 +1,11 @@
 from setuptools import setup
 
+long_description = open("README.rst", "r").read() 
+
 setup(name='DateJS',
       description='Python Library that converts Javascript Date objects to Python Datetime objects',
-      version='0.2',
+      version='0.4',
+      long_description=long_description,
       url='https://github.com/rithik/DateJS',
       author='Rithik Yelisetty',
       author_email='rithik@gmail.com',
@@ -13,7 +16,7 @@ setup(name='DateJS',
       ],
       packages=['DateJS'],
       install_requires=[
-          'PyExecJS>=1.4.1',
+          'JSPy>=1.0.0',
           'pytz>=2016.10'
       ],
       entry_points={
