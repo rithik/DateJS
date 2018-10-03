@@ -1,10 +1,10 @@
 from setuptools import setup
 
-long_description = open("README.rst", "r").read() 
+long_description = open("README.rst", "r").read()
 
 setup(name='DateJS',
       description='Python Library that converts Javascript Date objects to Python Datetime objects',
-      version='0.4',
+      version='0.5',
       long_description=long_description,
       url='https://github.com/rithik/DateJS',
       author='Rithik Yelisetty',
