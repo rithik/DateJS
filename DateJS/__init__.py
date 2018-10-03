@@ -3,15 +3,15 @@ import pytz
 import JSPy as js
 
 class DateJS():
-    def __init__(self, JS_STRING, y=0, m=0, d=0, h=0, minute=0, s=0, ms=0, tzo=0):
-        self.YEAR = y
-        self.MONTH = m + 1
-        self.DATE = d
-        self.HOUR = h
-        self.MINUTE = minute
-        self.SECOND = s
-        self.MILLISECONDS = ms
-        self.OFFSET = int(tzo)
+    def __init__(self, JS_STRING, convert=False):
+        self.YEAR = 0
+        self.MONTH = 0
+        self.DATE = 0
+        self.HOUR = 0
+        self.MINUTE = 0
+        self.SECOND = 0
+        self.MILLISECONDS = 0
+        self.OFFSET = 0
         self.TZ = None
         self.TZ_SIMPLE = None
         self.TZ_CUSTOM = None
@@ -22,9 +22,24 @@ class DateJS():
         self.CUSTOM_TIMEZONES = []
         self.jsFunction = None
         self.result = None
-        if self.YEAR == 0:
+        self.MONTH_ABBR_LIST = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        if convert:
             self.runJSFunction()
+        else:
+            self.parseValues()
         self.setAllValues()
+
+    def parseValues(self):
+        arr = self.JS_TIME.split()
+        self.YEAR = int(arr[3])
+        self.MONTH = self.MONTH_ABBR_LIST.index(arr[1])
+        self.DATE = int(arr[2])
+        time = arr[4].split(":")
+        self.HOUR = int(time[0])
+        self.MINUTE = int(time[1])
+        self.SECOND = int(time[2])
+        offset_string = ''.join(c for c in arr[5] if c.isdigit())
+        self.OFFSET = int(offset_string[:2]) * 60 + int(offset_string[2:])
 
     def runJSFunction(self):
         self.jsFunction = """
@@ -57,11 +72,11 @@ class DateJS():
         self.setTZ()
 
     def getTime(self):
-        self.PYTIME = self.PYTIME.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=pytz.timezone(self.TZ))
+        self.PYTIME = self.PYTIME.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=pytz.timezone(self.TZ_SIMPLE))
         return self.PYTIME
 
-    def getSimpleTime(self):
-        self.PYTIME_SIMPLE = self.PYTIME_SIMPLE.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=pytz.timezone(self.TZ_SIMPLE))
+    def getFullTime(self):
+        self.PYTIME_SIMPLE = self.PYTIME_SIMPLE.replace(year=self.YEAR, month=self.MONTH, day=self.DATE, hour=self.HOUR, minute=self.MINUTE, second=self.SECOND, microsecond=self.MILLISECONDS, tzinfo=pytz.timezone(self.TZ))
         return self.PYTIME_SIMPLE
 
     def getCustomTime(self):
@@ -118,10 +133,10 @@ class DateJS():
         return
 
     def getTimezone(self):
-        return self.TZ
-
-    def getSimpleTimezone(self):
         return self.TZ_SIMPLE
+
+    def getFullTimezone(self):
+        return self.TZ
 
     def getCustomTimezone(self):
         return self.TZ_CUSTOM
